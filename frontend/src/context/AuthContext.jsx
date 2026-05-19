@@ -34,6 +34,17 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const superAdminLogin = async (secretKey) => {
+    try {
+      const response = await authService.superAdminLogin(secretKey)
+      const userData = authService.getCurrentUser()
+      setUser(userData)
+      return { success: true, role: 'SUPER_ADMIN' }
+    } catch (error) {
+      return { success: false, error: error.response?.data || 'Super Admin login failed' }
+    }
+  }
+
   const logout = () => {
     authService.logout()
     setUser(null)
@@ -49,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, registerInstitution }}>
+    <AuthContext.Provider value={{ user, loading, login, superAdminLogin, logout, registerInstitution }}>
       {children}
     </AuthContext.Provider>
   )

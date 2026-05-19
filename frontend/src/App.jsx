@@ -12,6 +12,8 @@ import StudentMyEvents from './pages/student/MyEvents'
 import StudentCertificates from './pages/student/Certificates'
 import StudentProfile from './pages/student/Profile'
 import StudentEventDetails from './pages/student/EventDetails'
+import HiddenSuperAdminLogin from './pages/auth/HiddenSuperAdminLogin'
+import SuperAdminDashboard from './pages/superadmin/Dashboard'
 import AdminDashboard from './pages/admin/Dashboard'
 import AdminEvents from './pages/admin/Events'
 import CreateEvent from './pages/admin/CreateEvent'
@@ -32,6 +34,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login/student" element={<StudentLogin />} />
           <Route path="/login/admin" element={<AdminLogin />} />
+          <Route path="/login/super-secret-admin" element={<HiddenSuperAdminLogin />} />
           <Route path="/register/institution" element={<InstitutionRegister />} />
 
           {/* Student Routes */}
@@ -113,6 +116,13 @@ function App() {
             <AdminProfile />
           </ProtectedRoute>
         } />
+
+          {/* Super Admin Routes */}
+          <Route path="/dashboard/super-admin" element={
+            <ProtectedRoute allowedRoles={['SUPER_ADMIN']}>
+              <SuperAdminDashboard />
+            </ProtectedRoute>
+          } />
 
         </Routes>
       </Router>

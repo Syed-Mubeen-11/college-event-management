@@ -6,6 +6,7 @@ import com.college.eventmanagement.repository.UserRepository;
 import com.college.eventmanagement.repository.InstitutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +20,7 @@ public class UserService {
     private InstitutionRepository institutionRepository;
     
     // Register new user (student or admin)
+    @Transactional
     public User registerUser(User user, Long institutionId) {
         if (institutionId != null) {
             Institution institution = institutionRepository.findById(institutionId)
@@ -67,6 +69,11 @@ public class UserService {
     }
     
 
+    // Get all users by email (handles duplicate emails)
+    public List<User> getAllUsersByEmail(String email) {
+        return userRepository.findAllByEmail(email);
+    }
+    
     // Get all users (Super Admin only)
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -89,6 +96,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
+
+    // Delete user by ID
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
 
     // Check if email exists
     public boolean isEmailExists(String email) {

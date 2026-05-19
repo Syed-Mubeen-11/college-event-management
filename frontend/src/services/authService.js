@@ -34,6 +34,23 @@ const authService = {
   return response.data
 },
 
+  // Super Admin Login via Secret Key
+  superAdminLogin: async (secretKey) => {
+    const response = await api.post('/auth/super-admin/login', { key: secretKey })
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('user', JSON.stringify({
+        id: response.data.userId,
+        name: 'Super Admin',
+        email: 'superadmin@eventelite.com',
+        role: response.data.role,
+        institutionId: null,
+        institutionName: null
+      }))
+    }
+    return response.data
+  },
+
   // Institution Registration
   registerInstitution: async (data) => {
     const response = await api.post('/auth/register/institution', data)

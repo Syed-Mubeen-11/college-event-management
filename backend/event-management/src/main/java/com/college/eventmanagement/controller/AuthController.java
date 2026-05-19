@@ -15,6 +15,7 @@ import com.college.eventmanagement.entity.User;
 import com.college.eventmanagement.service.InstitutionService;
 import com.college.eventmanagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +26,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import jakarta.annotation.PostConstruct;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -47,6 +51,50 @@ public class AuthController {
     
     @Autowired
     private JwtUtils jwtUtils;
+    
+    @Value("${app.super-admin.secret-key}")
+    private String superAdminSecretKey;
+    
+    @Value("${app.super-admin.email}")
+    private String superAdminEmail;
+    
+    @Value("${app.super-admin.password}")
+    private String superAdminPassword;
+    
+    @PostConstruct
+    public void initSuperAdmin() {
+        try {
+            List<User> existing = userService.getAllUsersByEmail(superAdminEmail);
+            // Filter for SUPER_ADMIN role only
+            List<User> superAdmins = existing.stream()
+                .filter(u -> "SUPER_ADMIN".equals(u.getRole()))
+                .collect(Collectors.toList());
+            
+            if (superAdmins.isEmpty()) {
+                User superAdmin = new User();
+                superAdmin.setEmail(superAdminEmail);
+                superAdmin.setPassword(passwordEncoder.encode(superAdminPassword));
+                superAdmin.setName("Super Admin");
+                superAdmin.setRole("SUPER_ADMIN");
+                superAdmin.setIsActive(true);
+                userService.registerUser(superAdmin, null);
+                System.out.println("✅ Super Admin user created on startup: " + superAdminEmail);
+            } else {
+                // If duplicates exist, delete extras
+                if (superAdmins.size() > 1) {
+                    System.out.println("⚠️ Found " + superAdmins.size() + " duplicate super admin users. Cleaning up...");
+                    for (int i = 1; i < superAdmins.size(); i++) {
+                        userService.deleteUser(superAdmins.get(i).getId());
+                        System.out.println("   Deleted duplicate super admin ID: " + superAdmins.get(i).getId());
+                    }
+                }
+                System.out.println("✅ Super Admin user ready: " + superAdminEmail);
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Failed to create Super Admin user: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
     
     // Institution Self-Registration (Public)
     @PostMapping("/register/institution")
@@ -148,5 +196,54 @@ public class AuthController {
         // JWT is stateless, no server-side logout needed
         // Client should just remove the token
         return ResponseEntity.ok(Map.of("message", "Logout successful. Please remove your token on client side."));
+    }
+    
+    // Super Admin Login via Secret Key (Hidden Endpoint)
+    @PostMapping("/super-admin/login")
+    public ResponseEntity<?> superAdminLogin(@RequestBody Map<String, String> request) {
+        try {
+            String key = request.get("key");
+            
+            if (key == null || !superAdminSecretKey.equals(key)) {
+                return ResponseEntity.status(401).body("Invalid secret key");
+            }
+            
+            List<User> users = userService.getAllUsersByEmail(superAdminEmail);
+            if (users.isEmpty()) {
+                return ResponseEntity.status(500).body("Super Admin user not found. Restart the application to create it.");
+            }
+            
+            User superAdmin = users.stream()
+                .filter(u -> "SUPER_ADMIN".equals(u.getRole()))
+                .findFirst()
+                .orElse(null);
+            
+            if (superAdmin == null) {
+                return ResponseEntity.status(500).body("No user with SUPER_ADMIN role found for configured email");
+            }
+            
+            UserDetailsImpl userDetails = UserDetailsImpl.build(superAdmin);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails, null, userDetails.getAuthorities()
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            
+            String jwt = jwtUtils.generateJwtToken(authentication);
+            
+            LoginResponseDTO response = new LoginResponseDTO(
+                "Super Admin login successful",
+                jwt,
+                "SUPER_ADMIN",
+                superAdmin.getId(),
+                null,
+                null
+            );
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Super Admin login failed: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+        }
     }
 }

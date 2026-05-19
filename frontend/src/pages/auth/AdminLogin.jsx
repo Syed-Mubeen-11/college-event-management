@@ -35,7 +35,7 @@ function AdminLogin() {
   } else if (result.role === 'INSTITUTION_ADMIN') {
     navigate('/dashboard/admin')
   } else if (result.role === 'SUPER_ADMIN') {
-    navigate('/dashboard/super-secret')
+    navigate('/dashboard/super-admin')
   }
 } else {
     setError(result.error || 'Invalid email or password')
