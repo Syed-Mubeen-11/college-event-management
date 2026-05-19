@@ -30,6 +30,13 @@ A complete full-stack application for managing college events, student registrat
 - 🎓 Certificate Management (Mark attendance, Generate individual/bulk certificates)
 - 👤 Profile management
 
+### 👑 Super Admin Features
+- 🔐 Hidden login URL for security
+- 📊 System-wide dashboard with analytics
+- 🏢 View all registered institutions
+- ⚙️ Enable/Disable any institution
+- ✏️ Update institution details
+
 ### 🏢 Multi-College Support
 - Multiple institutions can register on the same platform
 - Complete data isolation between colleges
@@ -173,24 +180,42 @@ certificate.storage.path=certificates
 ```
 ## 📡 Complete API Endpoints
 
-### Public Endpoints
+### 🔓 Public Endpoints
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/auth/login` | User login |
+| POST | `/api/auth/login` | User login (Student/Admin) |
+| POST | `/api/auth/super-admin/login` | Super Admin login |
 | POST | `/api/auth/register/institution` | Register new college |
 | POST | `/api/auth/logout` | Logout |
 
-### Student Endpoints (Role: STUDENT)
+---
+
+### 👨‍🎓 Student Endpoints (Role: STUDENT)
+
+#### Events
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/student/events` | Get all upcoming events |
 | GET | `/api/student/events/{eventId}` | Get event details |
 | POST | `/api/student/events/{eventId}/register` | Register for event |
 | GET | `/api/student/my-events` | Get my registered events |
-| GET | `/api/student/certificates/my-certificates` | Get my certificates |
+
+#### Certificates
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/student/certificates/my-certificates` | Get all my certificates |
+| GET | `/api/student/certificates/{certificateId}` | Get certificate details |
 | GET | `/api/student/certificates/download/{certificateId}` | Download certificate PDF |
 
-### Admin Endpoints (Role: INSTITUTION_ADMIN)
+---
+
+### 👑 Admin Endpoints (Role: INSTITUTION_ADMIN)
+
+#### Profile Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/admin/profile` | Get admin profile |
+| PUT | `/api/admin/profile` | Update admin profile |
 
 #### Event Management
 | Method | Endpoint | Description |
@@ -207,40 +232,50 @@ certificate.storage.path=certificates
 #### Student Management
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/admin/students` | Add student |
+| POST | `/api/admin/students` | Add single student |
+| POST | `/api/admin/students/upload` | **Upload students via Excel/CSV** |
 | GET | `/api/admin/students` | Get all students |
 | PUT | `/api/admin/students/{studentId}` | Update student |
 | GET | `/api/admin/students/branch/{branch}` | Get students by branch |
 | GET | `/api/admin/students/year/{year}` | Get students by year |
-| DELETE | `/api/admin/registrations/{registrationId}/cancel` | Cancel registration |
+| DELETE | `/api/admin/registrations/{registrationId}/cancel` | Cancel student registration |
+
+#### Certificate Management
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/admin/certificates/event/{eventId}` | Get certificates for event |
+| POST | `/api/admin/certificates/generate/{eventId}/{studentId}` | Generate single certificate |
+| POST | `/api/admin/certificates/generate/event/{eventId}` | Generate all certificates |
+| PUT | `/api/admin/certificates/attendance/{eventId}/{studentId}` | Mark attendance |
 
 #### Reports
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/reports/dashboard` | Admin dashboard stats |
-| GET | `/api/reports/events/{eventId}/branch-wise` | Branch-wise report |
-| GET | `/api/reports/events/{eventId}/year-wise` | Year-wise report |
+| GET | `/api/reports/events/{eventId}/branch-wise` | Branch-wise registration report |
+| GET | `/api/reports/events/{eventId}/year-wise` | Year-wise registration report |
 | GET | `/api/reports/events/{eventId}/summary` | Complete event summary |
 
-#### Certificate Management
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/admin/certificates/event/{eventId}` | Get event certificates |
-| POST | `/api/admin/certificates/generate/{eventId}/{studentId}` | Generate single certificate |
-| POST | `/api/admin/certificates/generate/event/{eventId}` | Generate all certificates |
-| PUT | `/api/admin/certificates/attendance/{eventId}/{studentId}` | Mark attendance |
+---
 
-#### Profile Management
+### 👑 Super Admin Endpoints (Role: SUPER_ADMIN)
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/admin/profile` | Get admin profile |
-| PUT | `/api/admin/profile` | Update admin profile |
+| GET | `/api/super-admin/dashboard` | System-wide dashboard stats |
+| GET | `/api/super-admin/institutions` | Get all institutions |
+| GET | `/api/super-admin/institutions/{institutionId}` | Get institution details |
+| PUT | `/api/super-admin/institutions/{institutionId}` | Update institution |
+| PUT | `/api/super-admin/institutions/{institutionId}/disable` | Disable institution |
+| PUT | `/api/super-admin/institutions/{institutionId}/enable` | Enable institution |
+
+---
 
 ### Public Verification
+
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/public/certificates/verify/{uniqueId}` | Verify certificate online |
-
 ## 👨‍💻 Author
 
 **Your Name**
