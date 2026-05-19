@@ -1,16 +1,13 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   FaTachometerAlt,
-  FaUniversity,
   FaSignOutAlt,
   FaBars,
   FaTimes,
   FaShieldAlt,
   FaMoon,
-  FaSun,
-  FaBell,
-  FaUser
+  FaSun
 } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 
@@ -21,7 +18,7 @@ function SuperAdminLayout({ children }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark')
     } else {
@@ -38,7 +35,7 @@ function SuperAdminLayout({ children }) {
     { icon: FaTachometerAlt, label: 'Dashboard', path: '/dashboard/super-admin' },
   ]
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = () => {
       setProfileDropdownOpen(false)
     }
@@ -113,6 +110,7 @@ function SuperAdminLayout({ children }) {
                 {darkMode ? <FaSun className="text-yellow-400 text-lg" /> : <FaMoon className="text-primary text-lg" />}
               </button>
 
+              
               <div className="relative">
                 <button
                   onClick={(e) => {

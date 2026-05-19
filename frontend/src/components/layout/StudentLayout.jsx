@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { 
   FaTachometerAlt, 
@@ -11,9 +11,7 @@ import {
   FaUserGraduate,
   FaMoon,
   FaSun,
-  FaBell,
-  FaUser,
-  FaCog
+  FaUser
 } from 'react-icons/fa'
 import { useAuth } from '../../context/AuthContext'
 import logo from '../../assets/logo.png'
@@ -23,11 +21,10 @@ function StudentLayout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false)
-  const [notificationOpen, setNotificationOpen] = useState(false)
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark')
     } else {
@@ -48,10 +45,9 @@ function StudentLayout({ children }) {
   ]
 
   // Click outside to close dropdowns
-  React.useEffect(() => {
+  useEffect(() => {
     const handleClickOutside = () => {
       setProfileDropdownOpen(false)
-      setNotificationOpen(false)
     }
     document.addEventListener('click', handleClickOutside)
     return () => document.removeEventListener('click', handleClickOutside)
@@ -132,37 +128,6 @@ function StudentLayout({ children }) {
                 {darkMode ? <FaSun className="text-yellow-400 text-lg" /> : <FaMoon className="text-primary text-lg" />}
               </button>
               
-              {/* Notifications Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setNotificationOpen(!notificationOpen)
-                    setProfileDropdownOpen(false)
-                  }}
-                  className="p-2 rounded-full hover:bg-pink transition-colors relative"
-                  title="Notifications"
-                >
-                  <FaBell className="text-textSecondary text-lg" />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                </button>
-                
-                {notificationOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-darkCard rounded-lg shadow-lg border border-borderLight z-50">
-                    <div className="p-3 border-b border-borderLight">
-                      <h3 className="font-semibold">Notifications</h3>
-                    </div>
-                    <div className="max-h-64 overflow-y-auto">
-                      <div className="p-3 hover:bg-pink transition cursor-pointer">
-                        <p className="text-sm">No new notifications</p>
-                      </div>
-                    </div>
-                    <div className="p-2 border-t border-borderLight text-center">
-                      <button className="text-xs text-primary">Mark all as read</button>
-                    </div>
-                  </div>
-                )}
-              </div>
               
               {/* Profile Dropdown */}
           <div className="relative">
@@ -170,9 +135,8 @@ function StudentLayout({ children }) {
               onClick={(e) => {
                 e.stopPropagation()
                 setProfileDropdownOpen(!profileDropdownOpen)
-                setNotificationOpen(false)
-              }}
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-pink transition-colors"
+                  }}
+                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-pink transition-colors"
             >
               <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center">
                 <FaUserGraduate className="text-white text-sm" />

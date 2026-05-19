@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { FaChartBar, FaChartPie, FaCalendarAlt, FaUsers, FaDownload, FaArrowRight } from 'react-icons/fa'
+import { useState, useEffect } from 'react'
+import { FaChartBar } from 'react-icons/fa'
 import AdminLayout from '../../components/layout/AdminLayout'
 import adminService from '../../services/adminService'
 import toast from 'react-hot-toast'

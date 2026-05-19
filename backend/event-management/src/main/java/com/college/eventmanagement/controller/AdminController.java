@@ -3,6 +3,7 @@ package com.college.eventmanagement.controller;
 import com.college.eventmanagement.config.UserDetailsImpl;
 import com.college.eventmanagement.dto.EventDTO;
 import com.college.eventmanagement.dto.StudentDTO;
+import com.college.eventmanagement.dto.StudentUploadResult;
 import com.college.eventmanagement.entity.Event;
 import com.college.eventmanagement.entity.Institution;
 import com.college.eventmanagement.entity.User;
@@ -10,6 +11,7 @@ import com.college.eventmanagement.entity.Registration;
 import com.college.eventmanagement.service.EventService;
 import com.college.eventmanagement.service.InstitutionService;
 import com.college.eventmanagement.service.UserService;
+import com.college.eventmanagement.service.StudentUploadService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -19,10 +21,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import com.college.eventmanagement.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +54,10 @@ public class AdminController {
     private InstitutionService institutionService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;    
+    private PasswordEncoder passwordEncoder;   
+
+    @Autowired
+    private StudentUploadService studentUploadService; 
     
     // Helper method to get admin's institution
     private Institution getAdminInstitution(Authentication authentication) {
@@ -313,6 +320,34 @@ public ResponseEntity<?> addStudent(@RequestBody StudentDTO studentDTO, Authenti
         return ResponseEntity.badRequest().body("Error: " + e.getMessage());
     }
 }
+    @PostMapping(value = "/students/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadStudents(@RequestParam("file") MultipartFile file, Authentication authentication) {
+        try {
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("File is empty");
+            }
+
+            String filename = file.getOriginalFilename();
+            if (filename == null || (!filename.endsWith(".xlsx") && !filename.endsWith(".xls"))) {
+                return ResponseEntity.badRequest().body("Please upload an Excel file (.xlsx or .xls)");
+            }
+
+            Institution institution = getAdminInstitution(authentication);
+            StudentUploadResult result = studentUploadService.uploadStudents(file, institution);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Upload completed");
+            response.put("successCount", result.getSuccessCount());
+            response.put("failureCount", result.getFailureCount());
+            response.put("errors", result.getErrors());
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/students")
     public ResponseEntity<?> getAllStudents(Authentication authentication) {
         try {

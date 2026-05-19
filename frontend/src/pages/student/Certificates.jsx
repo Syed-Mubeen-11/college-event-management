@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { FaCertificate, FaDownload, FaCheckCircle } from 'react-icons/fa'
 import StudentLayout from '../../components/layout/StudentLayout'
 import studentService from '../../services/studentService'

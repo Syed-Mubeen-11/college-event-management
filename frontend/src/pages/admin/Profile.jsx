@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { FaUser, FaEnvelope, FaBuilding, FaSave } from 'react-icons/fa'
 import AdminLayout from '../../components/layout/AdminLayout'
 import adminService from '../../services/adminService'

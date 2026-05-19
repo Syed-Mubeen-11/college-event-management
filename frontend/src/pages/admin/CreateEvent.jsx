@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaArrowLeft, FaSave, FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaAlignLeft } from 'react-icons/fa'
 import AdminLayout from '../../components/layout/AdminLayout'

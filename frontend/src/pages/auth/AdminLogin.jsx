@@ -133,9 +133,9 @@ function AdminLogin() {
 
             {/* Footer Links */}
             <div className="mt-6 text-center">
-              <Link to="/forgot-password" className="text-sm text-textSecondary hover:text-primary transition">
-                Forgot Password?
-              </Link>
+              <span className="text-sm text-textSecondary">
+                Forgot Password? Contact super admin
+              </span>
               <p className="text-textSecondary text-sm mt-4">
                 New Institution?{' '}
                 <Link to="/register/institution" className="text-primary font-semibold hover:underline">

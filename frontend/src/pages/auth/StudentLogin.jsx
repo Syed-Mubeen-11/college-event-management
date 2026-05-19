@@ -134,9 +134,9 @@ const handleSubmit = async (e) => {
 
             {/* Footer Links */}
             <div className="mt-6 text-center">
-              <Link to="/forgot-password" className="text-sm text-textSecondary hover:text-primary transition">
-                Forgot Password?
-              </Link>
+              <span className="text-sm text-textSecondary">
+                Forgot Password? Contact admin
+              </span>
               <p className="text-textSecondary text-sm mt-4">
                 Don't have an account?{' '}
                 <span className="text-primary font-semibold">

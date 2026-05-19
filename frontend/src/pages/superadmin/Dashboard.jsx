@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { FaUniversity, FaUsers, FaCalendarAlt, FaShieldAlt, FaToggleOn, FaToggleOff, FaSyncAlt } from 'react-icons/fa'
 import SuperAdminLayout from '../../components/layout/SuperAdminLayout'
 import api from '../../services/api'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FaUser, FaEnvelope, FaGraduationCap, FaCalendarAlt, FaSave } from 'react-icons/fa'
 import StudentLayout from '../../components/layout/StudentLayout'
 import { useAuth } from '../../context/AuthContext'

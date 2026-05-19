@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   FaCalendarAlt, 
@@ -12,7 +12,6 @@ import {
   FaBars,
   FaTimes,
   FaArrowRight,
-  FaGraduationCap,
   FaUniversity,
   FaUserTie,
   FaUserGraduate

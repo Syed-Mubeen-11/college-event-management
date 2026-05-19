@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaArrowLeft, FaCheckCircle } from 'react-icons/fa'
 import StudentLayout from '../../components/layout/StudentLayout'

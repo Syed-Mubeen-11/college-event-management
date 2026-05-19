@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { FaCertificate, FaDownload, FaCheckCircle, FaSpinner, FaUsers, FaCalendarAlt, FaCheck, FaClock } from 'react-icons/fa'
 import AdminLayout from '../../components/layout/AdminLayout'
 import adminService from '../../services/adminService'
@@ -13,6 +13,7 @@ function Certificates() {
   const [loadingEvents, setLoadingEvents] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [attendanceMarking, setAttendanceMarking] = useState(null)
+  const [studentGrades, setStudentGrades] = useState({})
 
   useEffect(() => {
     fetchEvents()
@@ -53,7 +54,8 @@ function Certificates() {
     }
   }, [selectedEventId])
 
-  const handleMarkAttendance = async (studentId, attended, percentage, grade) => {
+  const handleMarkAttendance = async (studentId, attended, percentage) => {
+    const grade = studentGrades[studentId] || 'A'
     setAttendanceMarking(studentId)
     try {
       await adminService.markAttendance(selectedEventId, studentId, attended, percentage, grade)
@@ -207,7 +209,7 @@ function Certificates() {
                           </td>
                           <td className="py-3">
                             <button
-                              onClick={() => handleMarkAttendance(student.studentId, true, 100, 'A')}
+                              onClick={() => handleMarkAttendance(student.studentId, true, 100)}
                               disabled={attendanceMarking === student.studentId}
                               className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs hover:bg-green-200 transition"
                             >
@@ -217,13 +219,14 @@ function Certificates() {
                           <td className="py-3">
                             <select
                               className="input-field text-sm py-1 px-2 w-20"
-                              defaultValue="A"
+                              value={studentGrades[student.studentId] || 'A'}
+                              onChange={(e) => setStudentGrades(prev => ({ ...prev, [student.studentId]: e.target.value }))}
                             >
-                              <option>A</option>
-                              <option>B</option>
-                              <option>C</option>
-                              <option>D</option>
-                              <option>Pass</option>
+                              <option value="A">A</option>
+                              <option value="B">B</option>
+                              <option value="C">C</option>
+                              <option value="D">D</option>
+                              <option value="Pass">Pass</option>
                             </select>
                           </td>
                           <td className="py-3">

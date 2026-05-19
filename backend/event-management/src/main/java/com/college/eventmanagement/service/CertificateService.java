@@ -31,6 +31,7 @@ public class CertificateService {
     @Autowired
     private EventService eventService;
     
+    
     @Value("${certificate.storage.path:certificates}")
     private String storagePath;
     
@@ -76,7 +77,10 @@ public class CertificateService {
         certificate.setHasSignature(institution.getSignatureImageUrl() != null);
         certificate.setIsVerified(true);
         
-        return certificateRepository.save(certificate);
+        Certificate saved = certificateRepository.save(certificate);
+        
+        
+        return saved;
     }
     
     public List<Certificate> generateCertificatesForEvent(Long eventId) throws Exception {

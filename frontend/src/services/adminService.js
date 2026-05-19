@@ -84,10 +84,14 @@ const adminService = {
     return response.data
   },
 
-  deleteStudent: async (studentId) => {
-  const response = await api.delete(`/admin/students/${studentId}`)
-  return response.data
-    },
+  uploadStudents: async (file) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await api.post('/admin/students/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    return response.data
+  },
 
     // Update profile
     updateProfile: async (profileData) => {

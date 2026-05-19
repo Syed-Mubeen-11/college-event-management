@@ -22,6 +22,7 @@ public class RegistrationService {
     @Autowired
     private EventService eventService;
     
+    
     // Register student for an event
     public Registration registerStudent(Event event, User student) {
         // Check if already registered
@@ -46,7 +47,10 @@ public class RegistrationService {
         registration.setCancelled(false);
         registration.setAttendanceMarked(false);
         
-        return registrationRepository.save(registration);
+        Registration saved = registrationRepository.save(registration);
+        
+        
+        return saved;
     }
     
     // Cancel registration (admin only)

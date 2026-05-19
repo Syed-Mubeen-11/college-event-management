@@ -14,6 +14,7 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
     
+    
     // Create event
     public Event createEvent(Event event) {
         // Check if end date is after start date
@@ -72,7 +73,10 @@ public class EventService {
         Event event = getEventById(eventId);
         event.setStatus("CLOSED");
         event.setUpdatedAt(LocalDateTime.now());
-        return eventRepository.save(event);
+        Event saved = eventRepository.save(event);
+        
+        
+        return saved;
     }
     
     // Reopen event registration

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { FaShieldAlt, FaArrowRight, FaMoon, FaSun, FaSpinner } from 'react-icons/fa'
+import { useState, useEffect } from 'react'
+import { FaShieldAlt, FaArrowRight, FaSpinner } from 'react-icons/fa'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { FaCalendarAlt, FaMapMarkerAlt, FaCheckCircle, FaClock } from 'react-icons/fa'
+import { useState, useEffect } from 'react'
+import { FaCalendarAlt, FaMapMarkerAlt, FaClock } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import StudentLayout from '../../components/layout/StudentLayout'
 import studentService from '../../services/studentService'

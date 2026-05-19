@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaClock, FaArrowRight } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
 import StudentLayout from '../../components/layout/StudentLayout'
 import studentService from '../../services/studentService'
 import toast from 'react-hot-toast'
