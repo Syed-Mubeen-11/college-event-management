@@ -72,7 +72,7 @@ function Certificates() {
       toast.success('Certificate generated successfully')
       fetchEventData()
     } catch (error) {
-      toast.error('Failed to generate certificate')
+      toast.error(error.response?.data || error.message || 'Failed to generate certificate')
     }
   }
 
@@ -83,7 +83,7 @@ function Certificates() {
       toast.success('All certificates generated successfully')
       fetchEventData()
     } catch (error) {
-      toast.error('Failed to generate certificates')
+      toast.error(error.response?.data || error.message || 'Failed to generate certificates')
     } finally {
       setGenerating(false)
     }

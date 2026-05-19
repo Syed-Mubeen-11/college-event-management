@@ -46,8 +46,8 @@ public class CertificateService {
             throw new RuntimeException("Certificate already generated for this student");
         }
         
-        if (event.getEndDate().isAfter(LocalDate.now().atStartOfDay())) {
-            throw new RuntimeException("Certificate can only be generated after event completion");
+        if (!event.getEndDate().isBefore(java.time.LocalDateTime.now()) && !"CLOSED".equals(event.getStatus())) {
+            throw new RuntimeException("Certificate can only be generated after event completion or when event is closed");
         }
         
         Registration registration = registrationRepository.findByStudentAndEvent(student, event)
@@ -82,8 +82,8 @@ public class CertificateService {
     public List<Certificate> generateCertificatesForEvent(Long eventId) throws Exception {
         Event event = eventService.getEventById(eventId);
         
-        if (event.getEndDate().isAfter(LocalDate.now().atStartOfDay())) {
-            throw new RuntimeException("Certificates can only be generated after event completion");
+        if (!event.getEndDate().isBefore(java.time.LocalDateTime.now()) && !"CLOSED".equals(event.getStatus())) {
+            throw new RuntimeException("Certificates can only be generated after event completion or when event is closed");
         }
         
         List<Registration> registrations = registrationRepository.findByEventAndAttendanceMarkedTrue(event);

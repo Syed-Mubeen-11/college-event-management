@@ -23,7 +23,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     
     List<Event> findByEndDateBefore(LocalDateTime date);
     
-    @Query("SELECT e FROM Event e WHERE e.institution = :institution AND e.startDate > CURRENT_TIMESTAMP AND e.status != 'CLOSED'")
+    @Query("SELECT e FROM Event e WHERE e.institution = :institution AND e.endDate > CURRENT_TIMESTAMP AND e.status != 'CLOSED'")
     List<Event> findUpcomingEvents(@Param("institution") Institution institution);
     
     @Query("SELECT e FROM Event e WHERE e.institution = :institution AND e.endDate < CURRENT_TIMESTAMP")
