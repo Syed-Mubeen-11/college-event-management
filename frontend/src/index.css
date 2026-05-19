@@ -1,0 +1,181 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   CSS VARIABLES
+   ======================================== */
+:root {
+  --color-primary: #4A3267;
+  --color-secondary: #DE638A;
+  --color-pink: #F7B9C4;
+  --color-bgLight: #F5F0FF;
+  --color-cardLight: #FFFFFF;
+  --color-borderLight: #C6BADE;
+  --color-textPrimary: #2D1B3E;
+  --color-textSecondary: #6B5B7E;
+}
+
+.dark {
+  --color-bgLight: #1A0F2E;
+  --color-cardLight: #2D1B3E;
+  --color-borderLight: #4A3267;
+  --color-textPrimary: #F5F0FF;
+  --color-textSecondary: #F7B9C4;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+@layer base {
+  body {
+    background-color: var(--color-bgLight);
+    color: var(--color-textPrimary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ========================================
+   COMPONENT STYLES
+   ======================================== */
+@layer components {
+  /* Buttons */
+  .btn-primary {
+    background: linear-gradient(135deg, #4A3267 0%, #DE638A 100%);
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+  }
+  
+  .btn-secondary {
+    background-color: var(--color-secondary);
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--color-primary);
+  }
+  
+  .btn-outline {
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    font-weight: 600;
+    padding: 8px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: transparent;
+  }
+  
+  .btn-outline:hover {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  /* Cards */
+  .card {
+    background-color: var(--color-cardLight);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    border: 1px solid var(--color-borderLight);
+    transition: all 0.3s ease;
+  }
+
+  /* Form Elements */
+  .input-field {
+    width: 100%;
+    padding: 8px 16px;
+    border: 1px solid var(--color-borderLight);
+    border-radius: 8px;
+    background-color: white;
+    color: var(--color-textPrimary);
+  }
+  
+  .input-field:focus {
+    outline: none;
+    ring: 2px solid var(--color-primary);
+  }
+  
+  .label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-textSecondary);
+    margin-bottom: 4px;
+  }
+
+  /* Container */
+  .container-custom {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* ========================================
+   UTILITY STYLES
+   ======================================== */
+@layer utilities {
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-bgLight);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 4px;
+  }
+
+  /* Gradient Text */
+  .text-gradient {
+    background: linear-gradient(135deg, #4A3267 0%, #DE638A 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out;
+}
