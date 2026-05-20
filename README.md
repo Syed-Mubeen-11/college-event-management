@@ -10,6 +10,14 @@ A complete full-stack application for managing college events, student registrat
 ![JWT](https://img.shields.io/badge/JWT-Authentication-orange)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
+## 🚀 Live Demo
+
+| Service | URL |
+|---------|-----|
+| **Frontend** | [https://college-event-management-orpin.vercel.app](https://college-event-management-orpin.vercel.app) |
+| **Backend API** | [https://college-event-management-t6fj.onrender.com](https://college-event-management-t6fj.onrender.com) |
+| **Swagger UI** | [https://college-event-management-t6fj.onrender.com/swagger-ui.html](https://college-event-management-t6fj.onrender.com/swagger-ui.html) |
+
 ## ✨ Features
 
 ### 👨‍🎓 Student Features
