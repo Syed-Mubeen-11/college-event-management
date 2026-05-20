@@ -454,6 +454,37 @@ public ResponseEntity<?> addStudent(@RequestBody StudentDTO studentDTO, Authenti
         }
     }
 
+    @DeleteMapping("/students/{studentId}")
+    public ResponseEntity<?> deleteStudent(@PathVariable Long studentId, Authentication authentication) {
+        try {
+            Institution institution = getAdminInstitution(authentication);
+            
+            Optional<User> studentOpt = userService.getUserById(studentId);
+            if (studentOpt.isEmpty() || !studentOpt.get().getInstitution().getId().equals(institution.getId())) {
+                return ResponseEntity.status(403).body("Access denied");
+            }
+            
+            // Check if student has any registrations - you may want to handle this
+            List<Registration> registrations = registrationService.getRegistrationsByStudent(studentOpt.get());
+            if (!registrations.isEmpty()) {
+                // Option 1: Delete registrations first
+                for (Registration reg : registrations) {
+                    registrationService.cancelRegistration(reg.getId());
+                }
+            }
+            
+            userService.deleteUser(studentId);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "✅ Student deleted successfully");
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+        }
+    }
+
     @GetMapping("/profile")
 public ResponseEntity<?> getProfile(Authentication authentication) {
     try {
